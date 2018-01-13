@@ -1,0 +1,71 @@
+# Safely checking if two branches will merge without conflict
+
+git checkout my-feature-branch
+git checkout -b testing-conflicts-in-my-feature-branch
+git merge development-base-branch
+
+# Abort the merge
+git reset --hard HEAD
+
+# Deleting the branch
+git delete -b testing-conflicts-in-my-feature-branch
+
+# Print unmerged files
+git ls-files -u
+
+
+# Checking result of last command (bash)
+echo $?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Drafts:
+
+-- Update local dev branches
+
+git fetch origin
+git checkout v1.2/devel
+git merge origin/v1.2/devel
+git checkout v1.3/devel
+git merge origin/v1.3/devel
+git checkout v1.4/devel
+git merge origin/v1.4/devel
+
+
+
+-- Merge previous version branch
+
+git checkout v1.3/devel
+git checkout -b test-merge-from-v1.2-on-v1.3/feature-branch
+git merge v1.2/feature-branch
+if [[ $? -eq 0 ]]; then
+	echo "Sucess v1.2<-v1.3"
+else
+	echo "Failure v1.2<-v1.3 - Resetting branch"
+	git reset --hard HEAD
+fi
+
+git checkout v1.3/devel
+git delete -b test-merge-from-v1.2-on-v1.3/feature-branch
+
+
+
+
+
+

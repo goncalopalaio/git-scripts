@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+git fetch origin
+git checkout 4.2/devel
+git merge origin/4.2/devel
+git checkout 4.3/devel
+git merge origin/4.3/devel
+git checkout 4.4/devel
+git merge origin/4.4/devel
+
+git checkout 4.2/devel

@@ -1,0 +1,29 @@
+#!/usr/bin/bash
+
+prev_feature_branch=$1
+next_version_devel=$2
+next_version_branch_name=$3
+
+function quit_if_error {
+	local condition_result=$1
+	local message=$2
+
+	echo "Running: $message"
+	if [[ condition_result -eq 0 ]]; then
+		echo "SUCCESS"
+	else
+		echo "FAILURE"
+		exit $condition_result
+	fi
+}
+
+git checkout $next_version_devel
+quit_if_error [[ $? -eq 0 ]] "Checking out to $next_version_devel"
+
+git checkout -b $next_version_branch_name
+quit_if_error [[ $? -eq 0 ]] "Creating branch: $next_version_branch_name"
+
+git merge $prev_feature_branch
+quit_if_error [[ $? -eq 0 ]] "Merging branch: $prev_feature_branch into $next_version_branch_name"
+
+exit 0

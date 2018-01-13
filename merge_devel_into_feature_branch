@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+
+feature_branch=$1
+devel_branch=$1
+
+./test_merge_with_temp_branch $feature_branch $devel_branch
+
+if [[ $? -ne 0 ]]; then
+	echo "Failure while merging $devel_branch into $feature_branch. Aborting"
+	exit 1
+fi
+
+git checkout $feature_branch
+git merge $devel_branch
+
+exit $?
