@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+#!/bin/bash
+
 
 git fetch origin
 git checkout 4.2/devel

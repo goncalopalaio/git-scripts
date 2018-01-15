@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+#!/bin/bash
+
 
 prev_feature_branch=$1
 next_version_devel=$2

@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+#!/bin/bash
+
 
 feature_branch=$1
 devel_branch=$2

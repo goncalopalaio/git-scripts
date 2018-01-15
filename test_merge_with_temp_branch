@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # Arguments: devel branch-to-create-base-on-devel branch-to-merge-into-the-current
 
@@ -8,15 +8,15 @@ branch_to_merge=$2
 test_merge_branch_name="temp-merge-branch" 
 
 function quit_if_error {
-	local condition_result=$1
+	local return_status=$1
 	local message=$2
 
 	echo "Running: $message"
-	if [[ condition_result -eq 0 ]]; then
+	if [[ return_status -eq 0 ]]; then
 		echo "SUCCESS"
 	else
 		echo "FAILURE"
-		exit $condition_result
+		exit $return_status
 	fi
 }
 
@@ -25,11 +25,11 @@ echo "Creating $test_merge_branch_name from $base_branch and then merging $branc
 
 git checkout $base_branch
 
-quit_if_error [[ $? -eq 0 ]] "Checking out to $base_branch"
+quit_if_error $? "Checking out to $base_branch"
 
 git checkout -b $test_merge_branch_name
 
-quit_if_error [[ $? -eq 0 ]] "Creating $test_merge_branch_name branch"
+quit_if_error $? "Creating $test_merge_branch_name branch"
 
 echo "We are now in $(git symbolic-ref -q HEAD)"
 echo "Merging $branch_to_merge into $test_merge_branch_name"
@@ -37,14 +37,14 @@ echo "Merging $branch_to_merge into $test_merge_branch_name"
 git merge $branch_to_merge
 
 if [[ $? -eq 0 ]]; then
-	echo "SUCCESS - Reseting temporary branch and deleting. Checking out to $branch_to_merge"
-	git checkout $branch_to_merge
-	git delete -b $test_merge_branch_name
+	echo "SUCCESS - Reseting temporary branch and deleting. Checking out to $base_branch"
+	git checkout $base_branch
+	git branch -D $test_merge_branch_name
 	exit 0
 else
-	echo "FAILURE - Reseting temporary branch and deleting. Checking out to $branch_to_merge"
+	echo "FAILURE - Reseting temporary branch and deleting. Checking out to $base_branch"
 	git reset --hard HEAD
-	git checkout $branch_to_merge
-	git delete -b $test_merge_branch_name
+	git checkout $base_branch
+	git branch -D $test_merge_branch_name
 	exit 1
 fi
