@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 feature_branch=$1
-devel_branch=$1
+devel_branch=$2
 
 ./test_merge_with_temp_branch $feature_branch $devel_branch
 
